@@ -16,7 +16,6 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final TaskRepository taskRepository;
 
 
     public User findById(Long id){
@@ -31,7 +30,6 @@ public class UserService {
     public User create(User user){
         user.setId(null);
         user = this.userRepository.save(user);
-        this.taskRepository.saveAll(user.getTasks());
         return user;
     }
 
