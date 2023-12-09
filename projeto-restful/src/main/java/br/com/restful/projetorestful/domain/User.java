@@ -13,10 +13,12 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "user")
+@Table(name = "usuario")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -25,6 +27,11 @@ public class User {
 
     public interface CreateUser{}
     public interface UpdateUser{}
+
+    @OneToMany(mappedBy = "user")
+    private List<Task> tasks = new ArrayList<>();
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true)
@@ -59,7 +66,7 @@ public class User {
             else if(!this.id.equals(outro.id))
                 return false;
 
-        return Objects.equals(this.id, outro.id) && Objects.equals(this.username, outro.username) && Objects.equals(this.password, outro.password);
+         return Objects.equals(this.id, outro.id) && Objects.equals(this.username, outro.username) && Objects.equals(this.password, outro.password);
 
     }
 
