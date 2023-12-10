@@ -34,7 +34,7 @@ public class UserService {
     }
 
     @Transactional
-    private User update(User user){
+    public User update(User user){
         User updateUser = findById(user.getId());
         updateUser.setPassword(user.getPassword());
         return userRepository.save(updateUser);

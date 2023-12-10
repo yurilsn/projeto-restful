@@ -1,5 +1,6 @@
 package br.com.restful.projetorestful.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
@@ -49,6 +50,11 @@ public class User {
     @NotEmpty(groups = {CreateUser.class, UpdateUser.class})
     @Size(groups = {CreateUser.class, UpdateUser.class}, min = 8, max = 60)
     private String password;
+
+    @JsonIgnore
+    public List<Task> getTasks() {
+        return tasks;
+    }
 
     @Override
     public boolean equals(Object object) {

@@ -8,8 +8,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,32 +34,28 @@ public class UserRest {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Optional<User>> findById(@PathVariable("id") Long id){
-        return ResponseEntity.ok().body(userRepository.findById(id));
+    public ResponseEntity<User> findById(@PathVariable("id") Long id){
+        return ResponseEntity.ok().body(userService.findById(id));
     }
 
-//    @PostMapping("/SalvarUsuario")
-//    @ResponseStatus(HttpStatus.OK)
-//    public ResponseEntity<User> save(@RequestBody User user){
-//        taskRepository.saveAll(user.getTasks());
-//        return ResponseEntity.ok(userRepository.save(user));
-//    }
-//    @PostMapping("/SalvarUsuarios")
-//    @ResponseStatus(HttpStatus.OK)
-//    public ResponseEntity<List<User>> save(@RequestBody User user){
-//        return ResponseEntity.ok(userRepository.save(user));
-//    }
+    @PostMapping
+    @ResponseStatus(HttpStatus.OK)
+    @Validated(User.CreateUser.class)
+    public ResponseEntity<User> save(@Valid @RequestBody User user){
+        return ResponseEntity.ok(userService.create(user));
+//        this.userService.create(user);
+//        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
+//        return ResponseEntity.created(uri).build();
+    }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<User> update(@RequestBody User userUpdate, @PathVariable("id") Long id){
-        var user = userRepository.findById(id).get();
-        BeanUtils.copyProperties(userUpdate, user);
-        return ResponseEntity.ok().body(userRepository.save(user));
-
+    @Validated(User.UpdateUser.class)
+    public ResponseEntity<User> update(@Valid @RequestBody User userUpdate, @Valid @PathVariable("id") Long id){
+        return ResponseEntity.ok().body(userService.update(userUpdate));
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> delete(@PathVariable("id") Long id){
         userRepository.deleteById(id);
