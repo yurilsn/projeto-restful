@@ -6,6 +6,7 @@ import br.com.restful.projetorestful.repository.TaskRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,6 +15,17 @@ public class TaskService {
 
     private TaskRepository taskRepository;
     private UserService userService;
+
+
+    public List<Task> findAllByUserId(Long userId){
+        List<Task> tasks = userService.findById(userId).getTasks();
+        return tasks;
+    }
+
+//    public List<Task> findAllByUserId(Long userId){
+//        List<Task> tasks = this.taskRepository.findByUser_Id(userId);
+//        return tasks;
+//    }
 
     public Task findById(Long id) {
         Optional<Task> task = this.taskRepository.findById(id);

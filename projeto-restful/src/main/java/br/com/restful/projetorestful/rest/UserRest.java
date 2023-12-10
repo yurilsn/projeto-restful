@@ -43,9 +43,6 @@ public class UserRest {
     @Validated(User.CreateUser.class)
     public ResponseEntity<User> save(@Valid @RequestBody User user){
         return ResponseEntity.ok(userService.create(user));
-//        this.userService.create(user);
-//        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
-//        return ResponseEntity.created(uri).build();
     }
 
     @PutMapping("/{id}")
